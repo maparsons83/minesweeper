@@ -1,3 +1,5 @@
+const board = document.getElementById("container");
+
 function drawBoard () {
     var container = document.getElementById("container");
     var tbl = document.createElement("table");
@@ -11,8 +13,8 @@ function drawBoard () {
         
         for (let yCol = 0; yCol < numCol; yCol++) {
             let cell = document.createElement("td");
-            let cellText = document.createTextNode ("Test");
-            cell.appendChild(cellText);
+            cell.dataset.nearby_bombs = 0;
+            cell.classList.add("unclicked");
             row.appendChild(cell);
 
         }
@@ -25,14 +27,27 @@ function drawBoard () {
         var cellIndex = Math.floor(Math.random() * cells.length);
         
         var cell = cells[cellIndex];
-        if (cell.className === "bomb") {
+        if (cell.className.includes("bomb")) {
             continue;
         }
-        cell.className = "bomb";
+        cell.classList.add("bomb");
         bombsToPlace--;
  
     }
     tbl.appendChild(tblBody);
     container.appendChild(tbl);
-    tbl.setAttribute("border", "2")
+    tbl.setAttribute("border", "2");
+    
 }
+
+var mineBoard = {
+
+    handleEvent: function(eventTarget) {
+        if (eventTarget) {
+            let cell = event.target;
+            cell.classList.remove("unclicked");
+            cell.classList.add("clicked");
+        }
+    }
+}
+board.addEventListener("click", mineBoard, false)

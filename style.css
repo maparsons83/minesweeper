@@ -1,7 +1,7 @@
 td {
     height: 60px;
     width: 60px;
-    background-color: grey;
+    content: attr("nearbyBombs");
 }
 
 #draw {
@@ -15,5 +15,18 @@ td {
 }
 
 .bomb {
-    background-color: red;
+    background-image: url("https://media3.giphy.com/media/3oKIP9lEHLNmzoeJeU/200w.gif");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    height: 60px;
+    width: 60px;
+}
+
+.clicked {
+    background-color: white;
+}
+
+.unclicked {
+    background-color: grey;
+    background-image: none !important;
 }
