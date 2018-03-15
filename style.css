@@ -1,0 +1,19 @@
+td {
+    height: 60px;
+    width: 60px;
+    background-color: grey;
+}
+
+#draw {
+    background-color: green;
+    color: white;
+}
+
+#reset {
+    background-color: red;
+    color: white;
+}
+
+.bomb {
+    background-color: red;
+}
