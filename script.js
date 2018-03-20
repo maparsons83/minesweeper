@@ -1,6 +1,6 @@
 const board = document.getElementById("container");
 
-function drawBoard () {
+function drawBoard() {
     var container = document.getElementById("container");
     var tbl = document.createElement("table");
     var tblBody = document.createElement("tbody");
@@ -10,8 +10,8 @@ function drawBoard () {
 
     const timer = {
         element: document.querySelector("h1"),
-        seconds: 0, 
-        minutes: 0, 
+        seconds: 0,
+        minutes: 0,
         timeout: null,
         gameTime: () => {
             timer.timeout = setInterval(timer.add, 1000);
@@ -22,20 +22,20 @@ function drawBoard () {
                 timer.seconds = 0;
                 timer.minutes++;
             }
-            timer.element.textContent = 
-                (timer.minutes 
-                    ? (timer.minutes > 9 
-                        ? timer.minutes 
-                        : "0" + timer.minutes) 
-                    : "00") + ":" + (timer.seconds > 9 
-                                        ? timer.seconds 
-                                        : "0" + timer.seconds);
+            timer.element.textContent =
+                (timer.minutes ?
+                    (timer.minutes > 9 ?
+                        timer.minutes :
+                        "0" + timer.minutes) :
+                    "00") + ":" + (timer.seconds > 9 ?
+                    timer.seconds :
+                    "0" + timer.seconds);
         },
     }
 
     for (let xRow = 0; xRow < numRow; xRow++) {
         let row = document.createElement("tr");
-        
+
         for (let yCol = 0; yCol < numCol; yCol++) {
             let cell = document.createElement("td");
             cell.dataset.nearby_bombs = 0;
@@ -46,46 +46,54 @@ function drawBoard () {
         tblBody.appendChild(row);
     }
     let cells = tblBody.querySelectorAll("td");
-   
+
     while (bombsToPlace) {
 
         var cellIndex = Math.floor(Math.random() * cells.length);
-        
+
         var cell = cells[cellIndex];
         if (cell.className.includes("bomb")) {
             continue;
         }
         cell.classList.add("bomb");
         bombsToPlace--;
- 
+
     }
 
     timer.gameTime();
-    
+
     tbl.appendChild(tblBody);
     container.appendChild(tbl);
     tbl.setAttribute("border", "2");
-    
+
 }
+
 
 var mineBoard = {
 
-    handleEvent: function(eventTarget) {
-        if (eventTarget) {
-            let exploded = false;
-            let unclicked = board.getElementsByClassName("unclicked");
-            let cell = event.target;
-            cell.classList.remove("unclicked");
-            cell.classList.add("clicked");
-            if (cell.className.includes("bomb")) {
-                alert ("You ded");
-                exploded = true;    
+    getUnclickedCells: function () {
+        if (this.unclickedCells) {
+            return this.unclickedCells;
+        } else {
+            return this.unclickedCells = board.getElementsByClassName("unclicked");
+        }
+    },
+
+    handleEvent: function (event) {
+        let cell = event.target;
+        
+        cell.classList.remove("unclicked");
+        cell.classList.add("clicked");
+        
+        if (cell.className.includes("bomb")) {
+            alert("You ded");
+            while (this.getUnclickedCells().length) {
+                const unclickedCell = this.getUnclickedCells()[0];
+                unclickedCell.classList.remove("unclicked");
             }
-            if (exploded === true) {
-                    for (var i = 0; i < unclicked.length; i++) {
-                        unclicked[i].classList.remove("unclicked");
-                    }
-                }
+            // for (let unclickedCell of board.querySelectorAll(".unclicked")) {
+                // unclickedCell.classList.remove("unclicked");
+            // }
         }
     }
 
